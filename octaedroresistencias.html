@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Octaedro de Resistencias</title>
+  <link rel="icon" href="img/uvlogo.jpg">
+  <style>
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .center_div{
+      margin: 0 auto;
+      width: 656px;
+      text-align: center;
+    }
+    label{
+      font-size: 25px;
+    }
+  </style>
+</head>
+<body>
+<img src="img/oct/octlogo.png" class="center"/>
+<label>Ingrese el valor de la resistencia: </label> <input type="number" id="valor" min="0" onchange="onValorChange()">
+<br>
+<div class="center_div">
+  <button id="atras" onclick="cambio(-1)" style="visibility: hidden">atras</button>
+  <button id="siguiente" onclick="cambio(1)" style="visibility: hidden">siguiente</button>
+</div>
+<img id="instruccion" src="" class="center" width="100%">
+<div class="center_div">
+  <label id="resultado"></label>
+</div>
+
+<script>
+  var MAX_PASOS = 11;
+  var paso = 1;
+  var baseImg = "img/oct/paso";
+
+  var valorInput = document.getElementById("valor");
+  var resultado = document.getElementById("resultado");
+  var atras = document.getElementById("atras");
+  var siguiente = document.getElementById("siguiente");
+  var instruccion = document.getElementById("instruccion");
+
+  function getImgUrl(paso){
+    return baseImg + paso.toString() + ".png";
+  }
+
+  function cambio(cambio){
+    paso = paso + cambio;
+    atras.style.visibility = "visible";
+    siguiente.style.visibility = "visible";
+
+    if(paso == 1 ){
+      atras.style.visibility = "hidden";
+    }
+    if(paso == MAX_PASOS ){
+      siguiente.style.visibility = "hidden";
+    }
+
+    instruccion.src = getImgUrl(paso);
+    calculateResultado();
+  }
+
+  function calculateResultado(){
+    var texto = "";
+    var valor = valorInput.value;
+    switch (paso){
+      case 1: ;break;
+      case 2: texto = "R(a)=R(b)=R(c)= " + (3*valor) ;break;
+      case 3: texto = "R(eq)= " + ((3/4)*valor) ;break;
+      case 4: texto = "R(1)= " + (3*valor) +"; R(2)= " + (valor) +"; R(3) = " +((3/4)*valor) +
+        "<br>R(a)= " + (2*valor) + "; R(b)= " + (6*valor) + "; R(c) = " + (8*valor);break;
+      case 5: texto = "R(eq)= " + ((2/3)*valor) ;break;
+      case 6: texto = "R(a)= " + ((2/3)*valor) +"; R(b)= " + ((2/3)*valor) +"; R(c) = " +(8*valor) +
+        "<br>R(1)= " + ((4/7)*valor) + "; R(2)= " + ((4/7)*valor) + "; R(3) = " + ((1/21)*valor);break;
+      case 7: texto = "R(eq)= " + ((2/21)*valor) ;break;
+      case 8: texto = "R(eq)= " + ((15/7)*valor) ;break;
+      case 9: texto = "R(eq)= " + ((30/329)*valor) ;break;
+      case 10: texto = "R(eq)= " + ((58/47)*valor) ;break;
+      case 11: texto = "Resultado Final= " + ((58/105)*valor) ;break;
+    }
+    resultado.innerHTML = texto;
+  }
+
+  function onValorChange(){
+    cambio(0);
+  }
+</script>
+
+</body>
+</html>
